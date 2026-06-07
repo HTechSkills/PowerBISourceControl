@@ -1,0 +1,33 @@
+expression udfBuildISO8601Date =
+		let
+		  Source = Sql.Databases("HET\SQLEXPRESS"),
+		  #"Navigation 1" = Source{[Name = "AdventureWorksDW2022"]}[Data],
+		  #"Navigation 2" = #"Navigation 1"{[Schema = "dbo", Item = "udfBuildISO8601Date"]}[Data]
+		in
+		  #"Navigation 2"
+	lineageTag: c1e1118b-4c21-4ca7-8442-4f1231a7db0a
+
+	annotation PBI_ResultType = Function
+
+expression udfMinimumDate =
+		let
+		  Source = Sql.Databases("HET\SQLEXPRESS"),
+		  #"Navigation 1" = Source{[Name = "AdventureWorksDW2022"]}[Data],
+		  #"Navigation 2" = #"Navigation 1"{[Schema = "dbo", Item = "udfMinimumDate"]}[Data]
+		in
+		  #"Navigation 2"
+	lineageTag: 2be0ffb4-4356-4301-a566-19682be1c8a3
+
+	annotation PBI_ResultType = Function
+
+expression udfTwoDigitZeroFill =
+		let
+		  Source = Sql.Databases("HET\SQLEXPRESS"),
+		  #"Navigation 1" = Source{[Name = "AdventureWorksDW2022"]}[Data],
+		  #"Navigation 2" = #"Navigation 1"{[Schema = "dbo", Item = "udfTwoDigitZeroFill"]}[Data]
+		in
+		  #"Navigation 2"
+	lineageTag: 7ff95965-8635-408e-a070-a8e6a7d349ff
+
+	annotation PBI_ResultType = Function
+

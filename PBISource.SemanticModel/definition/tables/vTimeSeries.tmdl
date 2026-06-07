@@ -1,0 +1,84 @@
+table vTimeSeries
+	lineageTag: 73d71bcb-a24d-4b19-8876-e0eabcc0e440
+
+	column ModelRegion
+		dataType: string
+		lineageTag: fb29b156-b18d-4f93-8d64-b28242b3285a
+		summarizeBy: none
+		sourceColumn: ModelRegion
+
+		annotation SummarizationSetBy = Automatic
+
+	column TimeIndex
+		dataType: int64
+		formatString: 0
+		lineageTag: 5e759681-e8b9-4fb9-a3d3-a0518db36cbc
+		summarizeBy: sum
+		sourceColumn: TimeIndex
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: f845fa14-7e53-4fb2-b010-25c2c1b29b86
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Amount
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 032f4686-387a-4941-956e-221135e4a8f7
+		summarizeBy: sum
+		sourceColumn: Amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column CalendarYear
+		dataType: int64
+		formatString: 0
+		lineageTag: ef503f3d-2752-4f84-a061-d19559217114
+		summarizeBy: sum
+		sourceColumn: CalendarYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: 5e2e251e-28be-46ce-a719-796a6d64749a
+		summarizeBy: sum
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportingDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 034d37bd-e565-4161-b4c7-f09adf88c8ea
+		summarizeBy: none
+		sourceColumn: ReportingDate
+
+		variation Variation
+			isDefault
+			relationship: 81c9c641-9896-426a-bf1c-72c9fd0643fe
+			defaultHierarchy: LocalDateTable_b9a41ca4-2295-4b38-9c6e-fc18e8a66b4a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition vTimeSeries = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Databases("HET\SQLEXPRESS"),
+				  #"Navigation 1" = Source{[Name = "AdventureWorksDW2022"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Schema = "dbo", Item = "vTimeSeries"]}[Data]
+				in
+				  #"Navigation 2"
+
+	annotation PBI_ResultType = Table
+

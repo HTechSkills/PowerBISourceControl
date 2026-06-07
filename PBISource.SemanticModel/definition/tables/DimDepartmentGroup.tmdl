@@ -1,0 +1,41 @@
+table DimDepartmentGroup
+	lineageTag: 757e421b-7e57-4e08-9e35-c95dfefa32ac
+
+	column DepartmentGroupKey
+		dataType: int64
+		formatString: 0
+		lineageTag: b5f9886d-7b98-4034-bd64-38d4e2125524
+		summarizeBy: none
+		sourceColumn: DepartmentGroupKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ParentDepartmentGroupKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 8a761bb8-45d3-4208-ac71-a1c8bfddffc6
+		summarizeBy: none
+		sourceColumn: ParentDepartmentGroupKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DepartmentGroupName
+		dataType: string
+		lineageTag: 9769dfd4-6300-4449-b2f5-5666c5141ffd
+		summarizeBy: none
+		sourceColumn: DepartmentGroupName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimDepartmentGroup = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Databases("HET\SQLEXPRESS"),
+				  #"Navigation 1" = Source{[Name = "AdventureWorksDW2022"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Schema = "dbo", Item = "DimDepartmentGroup"]}[Data]
+				in
+				  #"Navigation 2"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,49 @@
+table DimSalesReason
+	lineageTag: 1b7d8106-c601-4486-9759-a7792e2ca11e
+
+	column SalesReasonKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 9b7b6166-c929-4fae-9e6b-be5415f8cecd
+		summarizeBy: none
+		sourceColumn: SalesReasonKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesReasonAlternateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 77466006-c7c4-45f1-b85d-a6e0a83f55fc
+		summarizeBy: none
+		sourceColumn: SalesReasonAlternateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesReasonName
+		dataType: string
+		lineageTag: c8d795ed-b7aa-4b99-85e3-2b3c6f244efc
+		summarizeBy: none
+		sourceColumn: SalesReasonName
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesReasonReasonType
+		dataType: string
+		lineageTag: 5d081378-cb75-4486-988c-78b91d09be32
+		summarizeBy: none
+		sourceColumn: SalesReasonReasonType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimSalesReason = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Databases("HET\SQLEXPRESS"),
+				  #"Navigation 1" = Source{[Name = "AdventureWorksDW2022"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Schema = "dbo", Item = "DimSalesReason"]}[Data]
+				in
+				  #"Navigation 2"
+
+	annotation PBI_ResultType = Table
+

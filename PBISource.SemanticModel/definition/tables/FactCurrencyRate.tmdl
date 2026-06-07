@@ -1,0 +1,67 @@
+table FactCurrencyRate
+	lineageTag: e0f73fbb-654a-4ff3-b5cd-68093f54b476
+
+	column CurrencyKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 8b9c1e27-afb8-4195-ba58-a7f3cb0f3fda
+		summarizeBy: none
+		sourceColumn: CurrencyKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 2460b78e-9991-416c-9e24-19cb2fa6f9b9
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column AverageRate
+		dataType: double
+		lineageTag: 8fafa52b-c15b-495c-a5d8-3f4dcfa6469e
+		summarizeBy: sum
+		sourceColumn: AverageRate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column EndOfDayRate
+		dataType: double
+		lineageTag: 01b74bd2-1271-4464-b871-1c78b177c223
+		summarizeBy: sum
+		sourceColumn: EndOfDayRate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 583f63c8-47ce-4665-8688-c1a88b2abc56
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: b89ae5c4-e8bb-4e7c-b0c6-c16bf42cafc5
+			defaultHierarchy: LocalDateTable_d129d674-7d21-4eb7-bb6f-375f68fe0bf0.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactCurrencyRate = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Databases("HET\SQLEXPRESS"),
+				  #"Navigation 1" = Source{[Name = "AdventureWorksDW2022"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Schema = "dbo", Item = "FactCurrencyRate"]}[Data]
+				in
+				  #"Navigation 2"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,48 @@
+table vAssocSeqOrders
+	lineageTag: f24aef85-10d6-4166-9035-77add4945ad8
+
+	column OrderNumber
+		dataType: string
+		lineageTag: 6d7e1954-9a28-44ab-988c-409724b556b2
+		summarizeBy: none
+		sourceColumn: OrderNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerKey
+		dataType: int64
+		formatString: 0
+		lineageTag: c005ac0f-c0cf-4fa3-bf04-ccfd4bb69732
+		summarizeBy: count
+		sourceColumn: CustomerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: cc32a4be-8890-4352-a82c-5663f7d5acc6
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column IncomeGroup
+		dataType: string
+		lineageTag: 3a35a5a3-7dc0-4ff9-83eb-109d1ee3781e
+		summarizeBy: none
+		sourceColumn: IncomeGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	partition vAssocSeqOrders = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Databases("HET\SQLEXPRESS"),
+				  #"Navigation 1" = Source{[Name = "AdventureWorksDW2022"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Schema = "dbo", Item = "vAssocSeqOrders"]}[Data]
+				in
+				  #"Navigation 2"
+
+	annotation PBI_ResultType = Table
+

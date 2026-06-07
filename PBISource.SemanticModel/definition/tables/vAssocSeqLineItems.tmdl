@@ -1,0 +1,40 @@
+table vAssocSeqLineItems
+	lineageTag: 0db0bb45-6c28-465a-884d-419067ea830d
+
+	column OrderNumber
+		dataType: string
+		lineageTag: 5c6b0813-31f4-4ac0-bf6d-29bb578b181b
+		summarizeBy: none
+		sourceColumn: OrderNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column LineNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: b7704de6-45ca-4228-bcf4-716dc95d2f1e
+		summarizeBy: sum
+		sourceColumn: LineNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column Model
+		dataType: string
+		lineageTag: e6aac603-a47f-43b1-8ba2-89c9700f2260
+		summarizeBy: none
+		sourceColumn: Model
+
+		annotation SummarizationSetBy = Automatic
+
+	partition vAssocSeqLineItems = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Databases("HET\SQLEXPRESS"),
+				  #"Navigation 1" = Source{[Name = "AdventureWorksDW2022"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Schema = "dbo", Item = "vAssocSeqLineItems"]}[Data]
+				in
+				  #"Navigation 2"
+
+	annotation PBI_ResultType = Table
+

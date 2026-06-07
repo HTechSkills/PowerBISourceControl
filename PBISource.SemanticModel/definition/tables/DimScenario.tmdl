@@ -1,0 +1,32 @@
+table DimScenario
+	lineageTag: 889720ba-53ab-4019-b81c-fe33ab15249d
+
+	column ScenarioKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 0c89e650-cd3c-42f7-a78d-82a93e8c8077
+		summarizeBy: none
+		sourceColumn: ScenarioKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ScenarioName
+		dataType: string
+		lineageTag: 7fe21477-8f7d-4435-94f7-9937437bfd88
+		summarizeBy: none
+		sourceColumn: ScenarioName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimScenario = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Databases("HET\SQLEXPRESS"),
+				  #"Navigation 1" = Source{[Name = "AdventureWorksDW2022"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Schema = "dbo", Item = "DimScenario"]}[Data]
+				in
+				  #"Navigation 2"
+
+	annotation PBI_ResultType = Table
+

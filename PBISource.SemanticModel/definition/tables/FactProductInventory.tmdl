@@ -1,0 +1,87 @@
+table FactProductInventory
+	lineageTag: a6db9588-ceac-406f-bea4-102df40f533e
+
+	column ProductKey
+		dataType: int64
+		formatString: 0
+		lineageTag: d67afb60-6cc6-46e3-a125-563766874b63
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 0f7e2768-1da0-4adc-9418-6107bf59d386
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column MovementDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 51c1497e-fcc8-4507-9a61-9003dfa6fa2a
+		summarizeBy: none
+		sourceColumn: MovementDate
+
+		variation Variation
+			isDefault
+			relationship: b8463071-993a-4e7e-8a12-6d54334becab
+			defaultHierarchy: LocalDateTable_b6bb27cc-5f41-442d-89e9-c2c77a7fce82.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column UnitCost
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 99ab8fdb-86e1-4651-8179-0ca7b3eaa8d7
+		summarizeBy: sum
+		sourceColumn: UnitCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column UnitsIn
+		dataType: int64
+		formatString: 0
+		lineageTag: d74332d4-dcb1-4934-b227-661cde9664ef
+		summarizeBy: sum
+		sourceColumn: UnitsIn
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitsOut
+		dataType: int64
+		formatString: 0
+		lineageTag: 08199ab5-2c78-4e6e-9329-7eae573f41bc
+		summarizeBy: sum
+		sourceColumn: UnitsOut
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitsBalance
+		dataType: int64
+		formatString: 0
+		lineageTag: 3f772193-caed-4455-9208-230209eda807
+		summarizeBy: sum
+		sourceColumn: UnitsBalance
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactProductInventory = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Databases("HET\SQLEXPRESS"),
+				  #"Navigation 1" = Source{[Name = "AdventureWorksDW2022"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Schema = "dbo", Item = "FactProductInventory"]}[Data]
+				in
+				  #"Navigation 2"
+
+	annotation PBI_ResultType = Table
+

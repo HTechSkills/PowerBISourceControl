@@ -1,0 +1,40 @@
+table FactAdditionalInternationalProductDescription
+	lineageTag: 57e92185-2c84-47c7-9b66-c390fa04e29d
+
+	column ProductKey
+		dataType: int64
+		formatString: 0
+		lineageTag: d13b1a3c-f26c-4c51-9e78-3860a89a43a4
+		summarizeBy: count
+		sourceColumn: ProductKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CultureName
+		dataType: string
+		lineageTag: 8c98be64-75ef-47e2-a62d-2937ea2910d9
+		summarizeBy: none
+		sourceColumn: CultureName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductDescription
+		dataType: string
+		lineageTag: 3cc85d8f-ae33-4685-a123-b19dd73e84f2
+		summarizeBy: none
+		sourceColumn: ProductDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactAdditionalInternationalProductDescription = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Databases("HET\SQLEXPRESS"),
+				  #"Navigation 1" = Source{[Name = "AdventureWorksDW2022"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Schema = "dbo", Item = "FactAdditionalInternationalProductDescription"]}[Data]
+				in
+				  #"Navigation 2"
+
+	annotation PBI_ResultType = Table
+
